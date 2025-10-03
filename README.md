@@ -6,8 +6,11 @@ Features include product listing, product detail view, add to cart, quantity upd
 🛠️ Tech Stack
 
 HTML5
+
 CSS3
+
 Bootstrap 5
+
 JavaScript
 
 
