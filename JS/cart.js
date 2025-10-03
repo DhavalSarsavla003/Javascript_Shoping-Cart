@@ -1,14 +1,17 @@
 let body = document.getElementById('body');
+let total=document.getElementById('total-detail');
+
 
 let CartDisplay = () => {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     let str = '';
     let sum = 0;
     let qunt = 0;
+    let Discount=0;
 
     cart.forEach(item => {
         str += `
-            <div class="d-flex flex-wrap col-12 justify-content-center align-items-center border-black-cart my-2 px-2 rounded-2">
+            <div class="d-flex flex-wrap col-11 justify-content-center align-items-center border-black-cart my-2 px-2 rounded-2">
                 <div class="col-12 col-md-2 bg-secondary rounded-2 my-2">
                     <img src="${item.thumbnail}" width="100">
                 </div>
@@ -26,18 +29,36 @@ let CartDisplay = () => {
                 <div class="col-12 col-md-2 delete-button my-2">
                     <button class="btn btn-secondary text-white" onclick="return DeleteCartItem(${item.id})"> Delete </button>
                 </div>
-            </div>
+            </div>  
         `;
-        qunt += item.quantity;
+        qunt += item.quantity;  
         sum += (item.price * item.quantity);
     });
+
+
     body.innerHTML = str;
     if (cart == 0) {
-        body.innerHTML = "Cart Is Empty..";
+        body.innerHTML ='<p class="text-center">Cart Is Empty..</p>';
+        document.querySelector('.total-detail-bill').style="display:none;";
     }
-    document.getElementById('total-detail').innerHTML = `<div class="col-6 col-md-4">Quantity : ${qunt}</div><div class="col-6 col-md-2">Price : ₹${sum.toFixed(2)}</div></tr>`;
-}
 
+    if(sum >= 500 && sum<=1000){
+        Discount = 5;
+    }
+    else if(sum >= 1001 && sum<=2000){
+        Discount = 10;
+    }
+    else if(sum>=2001){
+        Discount = 15;
+    }
+    
+    let finalBill = (sum*Discount)/100; 
+    let finalTotal = (sum-finalBill).toFixed(2);
+
+    total.innerHTML = `<div class="col-12"><span>Quantity : </span> ${qunt}</div><div class="col-12">Price : ₹${sum.toFixed(2)}</div></div><div class="col-12">Discount : ${Discount}%</div><div class="col-12">Discount Price : ₹${finalBill.toFixed(2)}</div> <div class="col-12">Final Bill : ${finalTotal}</div>`;
+
+
+}
 
 const incqun = (id) => {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
